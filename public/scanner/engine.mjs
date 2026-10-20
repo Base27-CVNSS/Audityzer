@@ -80,7 +80,7 @@ const CAPABILITIES = [
   {id:"assembly",severity:"medium",title:"Sử dụng assembly",why:"Assembly cần kiểm toán thủ công về bộ nhớ, phép gọi và tính đúng đắn.",pattern:/\bassembly\s*\{/i},
   {id:"unchecked",severity:"low",title:"Khối unchecked",why:"Các phép toán trong unchecked bỏ kiểm tra overflow mặc định của Solidity 0.8+.",pattern:/\bunchecked\s*\{/i},
   {id:"external-call",severity:"medium",title:"Gọi ETH qua low-level call",why:"Cần kiểm tra thứ tự effects/interactions, xử lý kết quả và chặn reentrancy; đây chưa phải bằng chứng lỗ hổng.",pattern:/\.call\s*\{[^}]*value\s*:/i},
-  {id:"owner-mint",severity:"high",title:"Khả năng phát hành thêm token",why:"Nếu quyền mint không bị giới hạn, nguồn cung có thể thay đổi; cần kiểm tra role, cap và trạng thái hiện tại.",name:/^(mint|_mint|issue|mintTo|bridgeMint|adminMint)$/i},
+  {id:"owner-mint",severity:"high",title:"Khả năng phát hành thêm token",why:"Nếu quyền mint không bị giới hạn, nguồn cung có thể thay đổi; cần kiểm tra role, cap và trạng thái hiện tại.",name:/^(mint|issue|mintTo|bridgeMint|adminMint)$/i},
   {id:"blacklist",severity:"high",title:"Kiểm soát blacklist / whitelist",why:"Quyền giới hạn địa chỉ có thể ảnh hưởng việc chuyển hoặc bán token.",name:/(blacklist|blocklist|setBlacklist|setWhitelist|excludeFromFees)/i},
   {id:"tax",severity:"high",title:"Thay đổi thuế / phí giao dịch",why:"Chủ thể có quyền chỉnh mức phí có thể khiến giao dịch không kinh tế hoặc khó bán.",name:/(set.*(tax|fee)|update.*(tax|fee)|change.*(tax|fee))/i},
   {id:"trading",severity:"high",title:"Bật/tắt hoặc hạn chế giao dịch",why:"Cơ chế trading hoặc giới hạn giao dịch có thể cản trở chuyển token.",name:/(enableTrading|disableTrading|setTrading|setMaxTx|setMaxWallet|setTransferLimit|setCooldown)/i},
@@ -150,7 +150,7 @@ export function riskSummary(findings, coverage, proxy) {
     total += SEVERITY_WEIGHT[f.severity] || 0;
   }
   if (proxy?.isProxy) total += 12;
-  const score = Math.min(100,total);
+  const score = Math.min(100,findings.some(f=>f.severity === "critical") ? Math.max(75,total) : total);
   return {score,level:score >= 70 ? "critical" : score >= 35 ? "high" : score >= 15 ? "medium" : "low",
     text:score >= 70 ? "Nhiều dấu hiệu cần kiểm tra" : score >= 35 ? "Rủi ro cần xem xét" : score >= 15 ? "Có quyền nhạy cảm" : "Ít tín hiệu theo bộ quy tắc"};
 }
