@@ -2,94 +2,143 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Audityzer QuickScan — dán địa chỉ smart contract hoặc URL explorer để nhận diện quyền và mẫu mã nguồn nhạy cảm, kèm bằng chứng.">
-  <title>Audityzer QuickScan — Quét rủi ro hợp đồng thông minh</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080c14">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="Audityzer QuickScan — kiểm tra dấu hiệu rủi ro hợp đồng thông minh từ mã nguồn đã xác minh. Dán địa chỉ 0x hoặc URL explorer, xem hàm nhạy cảm và bằng chứng.">
+  <meta property="og:title" content="Audityzer QuickScan — Smart Contract Risk Scanner">
+  <meta property="og:description" content="Dán địa chỉ hợp đồng. Phát hiện những hàm và quyền nhạy cảm. Không kết nối ví.">
+  <title>Audityzer QuickScan — Quét rủi ro Smart Contract</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23080c14'/%3E%3Cpath d='M32 9 51 20v24L32 55 13 44V20z' fill='none' stroke='%2358e3b5' stroke-width='4'/%3E%3Cpath d='m23 31 6 6 12-13' fill='none' stroke='%2358e3b5' stroke-linecap='round' stroke-linejoin='round' stroke-width='4'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<div class="layout">
-  <aside aria-label="Điều hướng">
-    <a class="logo" href="./" aria-label="Audityzer QuickScan"><span class="brand-icon">⬡</span><span>Audityzer<small style="display:block;font-size:11px;color:#88a9b7;letter-spacing:2px">QUICKSCAN</small></span></a>
-    <div class="nav-label">BẢO MẬT WEB3</div>
-    <a href="#scanner" class="navlink active">◈　Quét hợp đồng</a>
-    <a href="#results" class="navlink">▤　Báo cáo rủi ro</a>
-    <a href="#method" class="navlink">◎　Phương pháp</a>
-    <a href="https://github.com/Base27-CVNSS/Audityzer" target="_blank" rel="noopener noreferrer" class="navlink">↗　Mã nguồn GitHub</a>
-    <div class="aside-bottom"><span class="status-dot"></span>Không yêu cầu kết nối ví<br>Không ký giao dịch · Chỉ đọc dữ liệu công khai</div>
-  </aside>
-  <main>
-    <header class="topbar">
-      <div class="breadcrumb">SECURITY / <strong>CONTRACT SCANNER</strong></div>
-      <div class="toplinks"><a href="https://github.com/Base27-CVNSS/Audityzer" target="_blank" rel="noopener noreferrer">GitHub ↗</a><span class="pill">SOURCE-BASED TRIAGE</span></div>
-    </header>
-    <section class="hero" id="scanner">
-      <div class="eyebrow">SMART CONTRACT INTELLIGENCE</div>
-      <h1>Kiểm tra hợp đồng.<br><span>Phát hiện quyền nguy hiểm.</span></h1>
-      <p class="subheading">Dán một địa chỉ <strong>0x…</strong> hoặc đường dẫn Etherscan / BscScan / Blockscout. Hệ thống truy xuất mã nguồn công khai, chỉ ra hàm nhạy cảm và mức cảnh báo có dẫn chứng.</p>
-    </section>
-    <form id="scanForm" class="search-panel">
-      <div class="search-title">◈ Quét địa chỉ hợp đồng</div>
-      <div class="searchgrid">
-        <select class="field" id="chainSelect" aria-label="Chọn blockchain"></select>
-        <input class="field" id="contractInput" name="address" aria-label="Địa chỉ hợp đồng hoặc URL explorer" placeholder="0x… hoặc https://etherscan.io/address/0x…" autocapitalize="off" autocomplete="off" spellcheck="false" required>
-        <button class="button-primary" id="scanButton" type="submit">⌕　QUÉT RỦI RO</button>
-      </div>
-      <div class="search-hint">Tự nhận diện mạng khi dán URL explorer. Với địa chỉ <code>0x…</code>, chọn đúng mạng. Thử: <button class="button-ghost" type="button" id="exampleButton" style="padding:2px 7px;margin-left:4px">WETH · Ethereum</button></div>
-      <div class="loading" id="loading" role="status" aria-live="polite"><span class="spinner" aria-hidden="true"></span><span id="loadingText">Đang tra cứu nguồn công khai…</span></div>
-      <div class="message" id="message" role="alert"></div>
-    </form>
-    <div class="summary-strip" id="introStats">
-      <div class="mini"><span>01 / INPUT</span><b>8 EVM chains</b><span>URL explorer hoặc địa chỉ hợp đồng</span></div>
-      <div class="mini"><span>02 / ANALYSIS</span><b>14 nhóm cảnh báo</b><span>Tra cứu source / ABI và phân tích quy tắc</span></div>
-      <div class="mini"><span>03 / OUTPUT</span><b>Evidence-first</b><span>Hàm, file, dòng và gợi ý kiểm tra</span></div>
+<div class="site">
+  <header class="site-header">
+    <div class="shell header-inner">
+      <a class="brand" href="./" aria-label="Audityzer QuickScan — trang chủ">
+        <span class="brand-mark" aria-hidden="true">⬡</span>
+        <span class="brand-copy"><strong>audityzer<span class="brand-point">.</span></strong><small>CONTRACT INTELLIGENCE</small></span>
+      </a>
+      <nav class="desktop-nav" aria-label="Điều hướng chính">
+        <a class="nav-active" href="#scanner">Quét hợp đồng</a>
+        <a href="#method">Cách hoạt động</a>
+        <a href="https://github.com/Base27-CVNSS/Audityzer" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+      <span class="header-tag"><span class="pulse" aria-hidden="true"></span> BẢN THỬ NGHIỆM</span>
     </div>
-    <section class="results" id="results" aria-live="polite">
-      <div class="section-head"><div><div class="eyebrow">AUDIT FINDINGS</div><h2>Kết quả quét hợp đồng</h2></div><span class="tiny" id="scanTime"></span></div>
-      <div class="result-overview">
-        <div class="panel score-card">
-          <div class="tiny">CHỈ SỐ CẢNH BÁO QUY TẮC</div>
-          <div class="score-ring" id="scoreRing"><div class="score-inner"><strong id="scoreNumber">—</strong><small>/ 100</small></div></div>
-          <span class="tag unknown" id="scoreTag">Chưa đánh giá</span>
-          <div id="scoreText" style="font-weight:750"></div>
-          <p class="muted" id="scoreHint" style="font-size:12px;max-width:220px">Đây không phải điểm chứng nhận an toàn.</p>
+  </header>
+  <main>
+    <section class="hero shell" id="scanner">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="hero-kicker"><span class="kicker-rule"></span> CÔNG CỤ SÀNG LỌC RỦI RO WEB3 <span class="kicker-rule"></span></div>
+      <h1>Hiểu rõ hợp đồng <span>trước khi tương tác.</span></h1>
+      <p class="hero-description">Một địa chỉ là đủ để bắt đầu. Audityzer đọc mã nguồn công khai, tìm những hàm và quyền nhạy cảm, rồi giải thích vì sao chúng cần được kiểm tra kỹ hơn.</p>
+
+      <form id="scanForm" class="scanner-panel" aria-label="Biểu mẫu quét hợp đồng">
+        <div class="scan-topline">
+          <div class="scan-section-heading"><span class="scan-icon" aria-hidden="true">⌕</span><span>Kiểm tra địa chỉ hợp đồng</span></div>
+          <span class="scanner-subtag"><span class="dot"></span> CHỈ ĐỌC DỮ LIỆU CÔNG KHAI</span>
         </div>
-        <div class="panel">
-          <h3 id="contractName">Hợp đồng</h3>
+        <label class="input-label" for="chainSelect">BLOCKCHAIN</label>
+        <div class="input-row">
+          <div class="select-wrapper">
+            <select id="chainSelect" class="field chain-select" aria-label="Chọn blockchain"></select>
+          </div>
+          <label class="address-wrapper">
+            <span class="sr-only">Địa chỉ hợp đồng hoặc URL explorer</span>
+            <span class="input-symbol" aria-hidden="true">⌘</span>
+            <input class="field address-field" id="contractInput" name="address" aria-label="Địa chỉ hợp đồng hoặc URL explorer" placeholder="Nhập 0x... hoặc dán URL Etherscan / BaseScan..." autocapitalize="off" autocomplete="off" spellcheck="false" required>
+          </label>
+          <button class="button-primary" id="scanButton" type="submit"><span class="btn-icon" aria-hidden="true">⌕</span> QUÉT HỢP ĐỒNG <span aria-hidden="true">→</span></button>
+        </div>
+        <div class="scan-bottomline">
+          <span>Dán URL explorer sẽ tự nhận diện mạng tương ứng.</span>
+          <button type="button" id="exampleButton" class="example-button">Thử ví dụ WETH <span aria-hidden="true">↗</span></button>
+        </div>
+        <div id="loading" class="loading" role="status" aria-live="polite"><span class="spinner" aria-hidden="true"></span><span id="loadingText">Đang truy xuất mã nguồn…</span></div>
+        <div class="message" id="message" role="alert"></div>
+      </form>
+
+      <div id="introStats" class="trust-strip">
+        <div class="trust-stat"><span class="trust-symbol" aria-hidden="true">◇</span><span><strong>08 mạng EVM</strong><small>Ethereum, Base, BNB, Polygon và hơn nữa</small></span></div>
+        <div class="trust-stat"><span class="trust-symbol" aria-hidden="true">⌁</span><span><strong>14 nhóm cảnh báo</strong><small>Các hàm, lệnh và quyền nhạy cảm</small></span></div>
+        <div class="trust-stat"><span class="trust-symbol" aria-hidden="true">♧</span><span><strong>Minh bạch nguồn</strong><small>Ghi nhận hàm, file và dòng mã</small></span></div>
+      </div>
+    </section>
+
+    <section id="results" class="results shell" aria-live="polite" aria-label="Kết quả phân tích">
+      <div class="section-header">
+        <div><p class="section-eyebrow">AUDIT RESULTS</p><h2>Báo cáo phân tích hợp đồng</h2></div>
+        <span class="scan-time" id="scanTime"></span>
+      </div>
+      <div class="overview-grid">
+        <div class="panel score-card">
+          <span class="panel-eyebrow">CHỈ SỐ CẢNH BÁO</span>
+          <div class="score-ring" id="scoreRing"><div class="score-inner"><strong id="scoreNumber">—</strong><small>/100</small></div></div>
+          <span id="scoreTag" class="tag unknown">Chưa đánh giá</span>
+          <strong id="scoreText" class="score-text">Chưa có kết quả</strong>
+          <p class="score-caption" id="scoreHint">Đây không phải chứng nhận an toàn.</p>
+        </div>
+        <div class="panel contract-card">
+          <div class="contract-card-top">
+            <div><span class="panel-eyebrow">CHI TIẾT HỢP ĐỒNG</span><h3 id="contractName">Hợp đồng</h3></div>
+            <span class="contract-tag">ON-CHAIN LOOKUP</span>
+          </div>
           <dl class="details">
-            <dt>Mạng</dt><dd id="contractNetwork">—</dd>
+            <dt>Mạng blockchain</dt><dd id="contractNetwork">—</dd>
             <dt>Địa chỉ</dt><dd class="address" id="contractAddress">—</dd>
-            <dt>Xác minh nguồn</dt><dd id="contractVerified">—</dd>
-            <dt>Nhà cung cấp</dt><dd id="contractProvider">—</dd>
-            <dt>Phạm vi</dt><dd id="coverage">—</dd>
-            <dt>Hợp đồng proxy</dt><dd id="proxyInfo">—</dd>
-            <dt>Hàm / file mã nguồn</dt><dd id="functionStats">—</dd>
+            <dt>Xác minh mã nguồn</dt><dd id="contractVerified">—</dd>
+            <dt>Nhà cung cấp dữ liệu</dt><dd id="contractProvider">—</dd>
+            <dt>Phạm vi phân tích</dt><dd id="coverage">—</dd>
+            <dt>Proxy / Implementation</dt><dd id="proxyInfo">—</dd>
+            <dt>Hàm / File mã nguồn</dt><dd id="functionStats">—</dd>
           </dl>
           <div class="actions">
-            <a class="button-ghost" id="explorerLink" href="#" target="_blank" rel="noopener noreferrer">↗ Mở explorer</a>
-            <button class="button-ghost" id="copyButton" type="button">⧉ Sao chép địa chỉ</button>
-            <button class="button-ghost" id="shareButton" type="button">↗ Sao chép liên kết</button>
+            <a class="button-ghost" id="explorerLink" href="#" target="_blank" rel="noopener noreferrer">Mở explorer ↗</a>
+            <button class="button-ghost" id="copyButton" type="button">Sao chép địa chỉ</button>
+            <button class="button-ghost" id="shareButton" type="button">Chia sẻ kết quả</button>
             <button class="button-ghost" id="exportButton" type="button">↓ Xuất JSON</button>
           </div>
         </div>
       </div>
-      <div class="summary-strip" id="counts">
-        <div class="mini"><span>NGHIÊM TRỌNG + CAO</span><b id="highCount">0</b><span>Quyền hoặc mẫu đáng chú ý</span></div>
-        <div class="mini"><span>TRUNG BÌNH + THẤP</span><b id="otherCount">0</b><span>Cần thẩm định ngữ cảnh</span></div>
-        <div class="mini"><span>TỔNG CẢNH BÁO</span><b id="totalCount">0</b><span>Được trích từ source hoặc ABI</span></div>
+      <div class="counts-strip" id="counts">
+        <div class="count-card"><span>NGHIÊM TRỌNG + CAO</span><strong id="highCount">0</strong><small>Phát hiện đáng chú ý</small></div>
+        <div class="count-card"><span>TRUNG BÌNH + THẤP</span><strong id="otherCount">0</strong><small>Cần đánh giá thêm</small></div>
+        <div class="count-card"><span>TỔNG CẢNH BÁO</span><strong id="totalCount">0</strong><small>Theo quy tắc tĩnh</small></div>
       </div>
-      <div class="list-header"><div><h2>Hàm và hành vi cần xem xét</h2><span class="muted" style="font-size:12px">Chọn mức độ để lọc danh sách</span></div><div id="filters" class="filters" aria-label="Bộ lọc mức độ"><button type="button" class="filter" data-level="all" aria-pressed="true">Tất cả</button><button type="button" class="filter" data-level="critical" aria-pressed="false">Nghiêm trọng</button><button type="button" class="filter" data-level="high" aria-pressed="false">Cao</button><button type="button" class="filter" data-level="medium" aria-pressed="false">Trung bình</button><button type="button" class="filter" data-level="low" aria-pressed="false">Thấp</button></div></div>
-      <div id="findingList"></div>
-      <div class="notice"><strong>Giới hạn quan trọng:</strong> Đây là rà soát sơ bộ bằng mẫu mã nguồn/ABI, không phải kiểm toán bảo mật đầy đủ. Có hàm nhạy cảm không đồng nghĩa là gian lận; không có cảnh báo không chứng minh an toàn. Chưa mô phỏng mua/bán, honeypot, thanh khoản, thuế tại thời điểm giao dịch, quyền owner hiện tại hay khai thác thực tế. Proxy có thể nâng cấp sau thời điểm quét. Khi nguồn không xác minh hoặc API lỗi, kết quả là <strong>chưa đủ dữ liệu</strong>.</div>
+      <div class="list-header">
+        <div><p class="section-eyebrow">FUNCTION INSPECTION</p><h2>Hàm và hành vi cần xem xét</h2><p class="muted">Chạm một mức độ để lọc phát hiện.</p></div>
+        <div id="filters" class="filters" role="group" aria-label="Lọc cảnh báo theo mức độ">
+          <button class="filter" type="button" data-level="all" aria-pressed="true">Tất cả</button>
+          <button class="filter" type="button" data-level="critical" aria-pressed="false">Nghiêm trọng</button>
+          <button class="filter" type="button" data-level="high" aria-pressed="false">Cao</button>
+          <button class="filter" type="button" data-level="medium" aria-pressed="false">Trung bình</button>
+          <button class="filter" type="button" data-level="low" aria-pressed="false">Thấp</button>
+        </div>
+      </div>
+      <div id="findingList" class="findings"></div>
+      <div class="notice"><strong>Điều cần biết:</strong> Audityzer QuickScan phát hiện các <em>dấu hiệu cần kiểm tra</em> dựa trên mã nguồn/ABI, không xác nhận khai thác được hay hợp đồng gian lận. Không có cảnh báo không đồng nghĩa an toàn. Phiên bản này chưa mô phỏng giao dịch mua/bán, thuế hiệu lực, thanh khoản hay quyền quản trị hiện tại. Nếu không có mã nguồn/ABI hoặc API lỗi, kết quả là <strong>chưa đủ dữ liệu</strong>.</div>
     </section>
-    <section class="panel" id="method" style="margin-top:28px">
-      <div class="eyebrow">TRANSPARENT METHODOLOGY</div>
-      <h2 style="margin-top:8px">Phương pháp phân tích</h2>
-      <p class="muted">1. Chuẩn hóa địa chỉ và mạng. 2. Đọc hợp đồng đã xác minh từ Sourcify v2; dự phòng bằng Blockscout API v2 trên các mạng có hỗ trợ. 3. Kiểm tra tên hàm, câu lệnh và chức năng quản trị; đối chiếu ABI. 4. Nếu phát hiện proxy và địa chỉ implementation, cố gắng phân tích cả implementation. 5. Xuất báo cáo có nguồn và giới hạn rõ ràng.</p>
-      <div class="sources">Tham khảo nghiên cứu: <a href="https://github.com/Lord1Egypt/MaatEye" target="_blank" rel="noopener noreferrer">MaatEye ↗</a> · <a href="https://github.com/fboiero/MIESC" target="_blank" rel="noopener noreferrer">MIESC ↗</a> · <a href="https://github.com/TythanAI/TythanAI" target="_blank" rel="noopener noreferrer">TythanAI ↗</a> · <a href="https://github.com/aizen299/smart-contract-auditor" target="_blank" rel="noopener noreferrer">ChainAudit ↗</a> · <a href="https://github.com/tradingstrategy-ai/openaudit" target="_blank" rel="noopener noreferrer">OpenAudit ↗</a> — không khẳng định các engine này đang chạy trên trình duyệt.</div>
+
+    <section class="method-wrap" id="method">
+      <div class="shell">
+        <div class="section-header method-header"><div><p class="section-eyebrow">HOW IT WORKS</p><h2>Từ địa chỉ đến bằng chứng</h2><p class="muted">Quy trình đơn giản để bạn hiểu tín hiệu rủi ro.</p></div></div>
+        <div class="method-grid">
+          <article class="method-card"><span class="step-no">01</span><div class="method-glyph">⬡</div><h3>Nhập địa chỉ</h3><p>Chọn mạng hoặc dán URL explorer. Không cần kết nối ví hay khóa riêng.</p></article>
+          <article class="method-card"><span class="step-no">02</span><div class="method-glyph">⌘</div><h3>Truy xuất mã nguồn</h3><p>Tra cứu Sourcify và Blockscout, đối chiếu ABI và thông tin proxy khi có.</p></article>
+          <article class="method-card"><span class="step-no">03</span><div class="method-glyph">◎</div><h3>Giải thích cảnh báo</h3><p>Hiện tên hàm, bằng chứng và mức độ cần thẩm định — không dựng kết quả giả.</p></article>
+        </div>
+      </div>
     </section>
-    <footer class="footer">Audityzer QuickScan · Phân tích dữ liệu on-chain và nguồn đã xác minh · Không cần ví hoặc khóa riêng.</footer>
   </main>
+  <footer class="site-footer">
+    <div class="shell footer-inner">
+      <div><strong>audityzer<span class="brand-point">.</span></strong><span>QUICKSCAN · Mã nguồn có thể kiểm chứng</span></div>
+      <div><a href="#scanner">Quét hợp đồng</a><a href="https://github.com/Base27-CVNSS/Audityzer" rel="noopener noreferrer" target="_blank">GitHub ↗</a><a href="https://github.com/Base27-CVNSS/Audityzer/blob/safe-improvements/docs/QUICKSCAN.md" rel="noopener noreferrer" target="_blank">Tài liệu ↗</a></div>
+    </div>
+    <p class="footer-note shell">Công cụ sàng lọc ban đầu, không thay thế kiểm toán bảo mật độc lập. Không liên kết hoặc được chứng nhận bởi Honeypot.is.</p>
+  </footer>
 </div>
 <script type="module" src="./app.js"></script>
 </body>
