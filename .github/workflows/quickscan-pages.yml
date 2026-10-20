@@ -1,0 +1,70 @@
+name: Audityzer QuickScan — GitHub Pages
+
+on:
+  push:
+    branches:
+      - safe-improvements
+    paths:
+      - 'public/scanner/**'
+      - 'tests/quickscan-engine.test.mjs'
+      - '.github/workflows/quickscan-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: audityzer-quickscan-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Validate and package static site
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code (do not initialize broken git submodules)
+        uses: actions/checkout@v4
+        with:
+          submodules: false
+          persist-credentials: false
+
+      - name: Run deterministic analyzer tests
+        run: node --test tests/quickscan-engine.test.mjs
+
+      - name: Package QuickScan into Pages artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site/scanner
+          # Make QuickScan the GitHub Pages landing page, and also expose /scanner/.
+          cp public/scanner/index.html public/scanner/styles.css public/scanner/app.js public/scanner/engine.mjs _site/
+          cp public/scanner/index.html public/scanner/styles.css public/scanner/app.js public/scanner/engine.mjs _site/scanner/
+          touch _site/.nojekyll
+          test -s _site/index.html
+          test -s _site/app.js
+          test -s _site/engine.mjs
+          test -s _site/styles.css
+          test -s _site/scanner/index.html
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload static website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    name: Publish Audityzer QuickScan
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
