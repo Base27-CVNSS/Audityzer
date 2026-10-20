@@ -22,11 +22,22 @@ jobs:
     name: Validate and package static site
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code (do not initialize broken git submodules)
-        uses: actions/checkout@v4
-        with:
-          submodules: false
-          persist-credentials: false
+      - name: Fetch pinned website files without Git checkout
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p public/scanner tests
+          for file in \
+            public/scanner/index.html \
+            public/scanner/styles.css \
+            public/scanner/app.js \
+            public/scanner/engine.mjs \
+            tests/quickscan-engine.test.mjs; do
+            curl --fail --location --silent --show-error --retry 3 \
+              "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/${file}" \
+              --output "${file}"
+            test -s "${file}"
+          done
 
       - name: Run deterministic analyzer tests
         run: node --test tests/quickscan-engine.test.mjs
