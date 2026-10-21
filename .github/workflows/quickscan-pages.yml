@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p public/scanner tests
+          mkdir -p public/scanner public/blacklist tests
           for file in \
             public/scanner/index.html \
             public/scanner/styles.css \
