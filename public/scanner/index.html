@@ -11,7 +11,13 @@
   <title>Audityzer QuickScan — Quét rủi ro Smart Contract</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23080c14'/%3E%3Cpath d='M32 9 51 20v24L32 55 13 44V20z' fill='none' stroke='%2358e3b5' stroke-width='4'/%3E%3Cpath d='m23 31 6 6 12-13' fill='none' stroke='%2358e3b5' stroke-linecap='round' stroke-linejoin='round' stroke-width='4'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="./styles.css">
-</head>
+<style>
+.bl-panel{margin:20px 0 26px;background:#111c28;border:1px solid #2d554d;border-radius:14px;padding:20px 24px;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.bl-panel h3{font-size:18px;color:#e9faf8;margin:7px 0}.bl-panel p{font-size:13px;color:#adc3cc;line-height:1.6;margin:0}
+.bl-panel a{color:#67e7bd;font-weight:700;white-space:nowrap;font-size:13px;text-decoration:none}
+.bl-eyebrow{font-size:10px;letter-spacing:1.7px;color:#63dcb4;font-weight:800}
+@media(max-width:680px){.bl-panel{display:block}.bl-panel a{display:inline-block;margin-top:14px}}
+</style></head>
 <body>
 <div class="site">
   <header class="site-header">
@@ -22,6 +28,7 @@
       </a>
       <nav class="desktop-nav" aria-label="Điều hướng chính">
         <a class="nav-active" href="#scanner">Quét hợp đồng</a>
+        <a data-blacklist-link href="../blacklist/">Blacklist</a>
         <a href="#method">Cách hoạt động</a>
         <a href="https://github.com/Base27-CVNSS/Audityzer" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
       </nav>
@@ -102,6 +109,11 @@
           </div>
         </div>
       </div>
+      <section id="blPanel" class="bl-panel" aria-live="polite" aria-label="Đối chiếu Blacklist">
+        <div><span class="bl-eyebrow">BLACKLIST CROSS-CHECK</span><h3>Đối chiếu nguồn cảnh báo cộng đồng</h3>
+        <p id="blStatus">Sẽ kiểm tra địa chỉ cùng MyEtherWallet và EtherScamDB khi có kết quả phân tích.</p></div>
+        <a id="blDetails" href="../blacklist/">Tra cứu chi tiết ↗</a>
+      </section>
       <div class="counts-strip" id="counts">
         <div class="count-card"><span>NGHIÊM TRỌNG + CAO</span><strong id="highCount">0</strong><small>Phát hiện đáng chú ý</small></div>
         <div class="count-card"><span>TRUNG BÌNH + THẤP</span><strong id="otherCount">0</strong><small>Cần đánh giá thêm</small></div>
@@ -135,7 +147,7 @@
   <footer class="site-footer">
     <div class="shell footer-inner">
       <div><strong>audityzer<span class="brand-point">.</span></strong><span>QUICKSCAN · Mã nguồn có thể kiểm chứng</span></div>
-      <div><a href="#scanner">Quét hợp đồng</a><a href="https://github.com/Base27-CVNSS/Audityzer" rel="noopener noreferrer" target="_blank">GitHub ↗</a><a href="https://github.com/Base27-CVNSS/Audityzer/blob/safe-improvements/docs/QUICKSCAN.md" rel="noopener noreferrer" target="_blank">Tài liệu ↗</a></div>
+      <div><a href="#scanner">Quét hợp đồng</a><a data-blacklist-link href="../blacklist/">Blacklist</a><a href="https://github.com/Base27-CVNSS/Audityzer" rel="noopener noreferrer" target="_blank">GitHub ↗</a><a href="https://github.com/Base27-CVNSS/Audityzer/blob/safe-improvements/docs/QUICKSCAN.md" rel="noopener noreferrer" target="_blank">Tài liệu ↗</a></div>
     </div>
     <p class="footer-note shell">Công cụ sàng lọc ban đầu, không thay thế kiểm toán bảo mật độc lập. Không liên kết hoặc được chứng nhận bởi Honeypot.is.</p>
   </footer>

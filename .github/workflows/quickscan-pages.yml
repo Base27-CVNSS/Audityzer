@@ -6,7 +6,9 @@ on:
       - safe-improvements
     paths:
       - 'public/scanner/**'
+      - 'public/blacklist/**'
       - 'tests/quickscan-engine.test.mjs'
+      - 'tests/blacklist-static.test.mjs'
       - '.github/workflows/quickscan-pages.yml'
   workflow_dispatch:
 
@@ -32,7 +34,13 @@ jobs:
             public/scanner/styles.css \
             public/scanner/app.js \
             public/scanner/engine.mjs \
-            tests/quickscan-engine.test.mjs; do
+            public/blacklist/index.html \
+            public/blacklist/styles.css \
+            public/blacklist/app.js \
+            public/blacklist/data.json \
+            public/blacklist/LICENSES.txt \
+            tests/quickscan-engine.test.mjs \
+            tests/blacklist-static.test.mjs; do
             curl --fail --location --silent --show-error --retry 3 \
               "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/${file}" \
               --output "${file}"
@@ -40,22 +48,25 @@ jobs:
           done
 
       - name: Run deterministic analyzer tests
-        run: node --test tests/quickscan-engine.test.mjs
+        run: node --test tests/quickscan-engine.test.mjs tests/blacklist-static.test.mjs
 
       - name: Package QuickScan into Pages artifact
         shell: bash
         run: |
           set -euo pipefail
-          mkdir -p _site/scanner
+          mkdir -p _site/scanner _site/blacklist
           # Make QuickScan the GitHub Pages landing page, and also expose /scanner/.
           cp public/scanner/index.html public/scanner/styles.css public/scanner/app.js public/scanner/engine.mjs _site/
           cp public/scanner/index.html public/scanner/styles.css public/scanner/app.js public/scanner/engine.mjs _site/scanner/
+          cp public/blacklist/index.html public/blacklist/styles.css public/blacklist/app.js public/blacklist/data.json public/blacklist/LICENSES.txt _site/blacklist/
           touch _site/.nojekyll
           test -s _site/index.html
           test -s _site/app.js
           test -s _site/engine.mjs
           test -s _site/styles.css
           test -s _site/scanner/index.html
+          test -s _site/blacklist/index.html
+          test -s _site/blacklist/data.json
 
       - name: Configure Pages
         uses: actions/configure-pages@v5

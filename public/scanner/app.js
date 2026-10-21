@@ -3,6 +3,30 @@ const $ = id => document.getElementById(id);
 const SEVERITY = {critical:"Nghiêm trọng",high:"Cao",medium:"Trung bình",low:"Thấp",unknown:"Chưa đủ dữ liệu"};
 const CLEAN = value => String(value ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const scanner = {report:null,activeFilter:"all",busy:false};
+
+const blacklistBase=/\/scanner\/(?:index\.html)?$/.test(location.pathname)?"../blacklist/":"./blacklist/";
+document.querySelectorAll("[data-blacklist-link]").forEach(a=>{a.href=blacklistBase;});
+async function crossCheckBlacklist(report) {
+  const status=$("blStatus"),link=$("blDetails");
+  status.textContent="Đang đối chiếu địa chỉ với hai nguồn cộng đồng…";
+  link.href=blacklistBase+"?address="+encodeURIComponent(report.address);
+  try {
+    const response=await fetch(blacklistBase+"data.json");
+    if(!response.ok)throw Error("HTTP "+response.status);
+    const data=await response.json();
+    if(!Array.isArray(data.addresses)||!data.metadata?.counts)throw Error("Dữ liệu không hợp lệ");
+    if(scanner.report!==report)return;
+    const match=data.addresses.find(x=>x.value===report.address.toLowerCase());
+    if(match) {
+      status.textContent="⚠ Địa chỉ có trong danh sách được báo cáo bởi "+match.sources.map(s=>s==="mew"?"MyEtherWallet":"EtherScamDB").join(" và ")+". Đây là tín hiệu cần thẩm định, không tự động kết luận gian lận.";
+      report.blacklist={status:"listed",sources:match.sources,datasetDate:data.metadata.generatedAt};
+    }else{
+      status.textContent="Không tìm thấy địa chỉ trong bản chụp Blacklist ("+data.metadata.generatedAt+"). Không có trong danh sách không có nghĩa hợp đồng an toàn.";
+      report.blacklist={status:"not-listed",sources:[],datasetDate:data.metadata.generatedAt};
+    }
+  }catch(error){if(scanner.report===report){status.textContent="Không thể kiểm tra Blacklist: "+(error?.message||"lỗi dữ liệu")+". Kết quả hiện tại chưa bao gồm đánh giá danh sách cảnh báo.";report.blacklist={status:"unavailable"};}}
+}
+
 const input = $("contractInput");
 const chainPicker = $("chainSelect");
 NETWORKS.forEach(c => {
@@ -124,6 +148,7 @@ function render(report) {
   const network=NETWORKS.find(c=>c.id===report.chain.id);
   $("explorerLink").href=network.explorer+"/address/"+report.address+"#code";
   renderFindings();
+  void crossCheckBlacklist(report);
   if (report.apiWarnings.length) {
     setMessage("Một số dịch vụ chưa phản hồi: "+report.apiWarnings.join(" · ")+". Kết quả có thể chưa đầy đủ.");
   } else if (report.coverage==="none") {

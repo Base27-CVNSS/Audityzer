@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080c14">
+<title>Audityzer Blacklist — Tra cứu địa chỉ & tên miền cảnh báo</title>
+<meta name="description" content="Tra cứu danh sách địa chỉ Ethereum và tên miền được báo cáo từ MyEtherWallet và EtherScamDB. Không phải kết luận pháp lý.">
+<link rel="stylesheet" href="./styles.css"></head>
+<body>
+<div class="site">
+<header class="site-header"><div class="shell header-inner">
+<a class="brand" href="../scanner/"><span class="brand-mark">⬡</span><span><strong>audityzer<span class="point">.</span></strong><small>CONTRACT INTELLIGENCE</small></span></a>
+<nav aria-label="Điều hướng chính"><a href="../scanner/#scanner">Quét hợp đồng</a><a href="./" aria-current="page" class="nav-active">Blacklist</a><a href="#sources">Nguồn dữ liệu</a><a href="https://github.com/Base27-CVNSS/Audityzer" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav>
+<span class="version">DỮ LIỆU CỘNG ĐỒNG</span></div></header>
+<main class="shell">
+<section class="hero"><div class="eyebrow">WEB3 THREAT INTELLIGENCE / COMMUNITY REPORTS</div><h1>Danh sách <em>cảnh báo</em> địa chỉ & tên miền</h1>
+<p>Đối chiếu các địa chỉ ví, hợp đồng và tên miền được liệt kê trong MyEtherWallet và EtherScamDB. Đây là tín hiệu cần xác minh, <strong>không phải bằng chứng cuối cùng về hành vi lừa đảo.</strong></p>
+<form class="search" id="form"><label for="query">ĐỊA CHỈ 0x… / TÊN MIỀN / TỪ KHÓA</label><div class="search-row"><input id="query" autocomplete="off" spellcheck="false" placeholder="0x... hoặc example.com" aria-label="Nhập địa chỉ hoặc tên miền"><button type="submit">⌕ TRA CỨU</button></div><div class="small">Hỗ trợ dán URL explorer hoặc URL website; không mở trang nghi vấn.</div></form>
+<div class="metrics" id="metrics" aria-live="polite"><div><span>ĐỊA CHỈ DUY NHẤT</span><strong id="addressCount">—</strong></div><div><span>TÊN MIỀN DUY NHẤT</span><strong id="domainCount">—</strong></div><div><span>MEW / ETHERSCAMDB</span><strong id="sourceCount">—</strong></div><div><span>DỮ LIỆU TẠI NGÀY</span><strong id="asOf">—</strong></div></div>
+</section>
+<section class="data-section" id="database">
+<div class="section-heading"><div><span class="eyebrow">LOOKUP RESULTS</span><h2>Tra cứu Blacklist</h2><p id="summary" role="status" aria-live="polite">Đang tải dữ liệu từ bản chụp đã xuất bản…</p></div><span id="loadState" class="state">ĐANG TẢI</span></div>
+<div class="controls"><div role="group" aria-label="Loại đối tượng" class="tabs"><button data-type="all" aria-pressed="true">Tất cả</button><button data-type="address" aria-pressed="false">Địa chỉ</button><button data-type="domain" aria-pressed="false">Tên miền</button></div>
+<label for="sourceFilter">Nguồn <select id="sourceFilter"><option value="all">Cả hai nguồn</option><option value="mew">MyEtherWallet</option><option value="etherscamdb">EtherScamDB</option></select></label></div>
+<div id="results" class="results" aria-live="polite"></div><button class="load-more" id="more" type="button" hidden>Xem thêm kết quả ↓</button>
+<div class="notice"><strong>Lưu ý:</strong> Kết quả là đối chiếu chính xác với bản dữ liệu đã đồng bộ, không phải kiểm toán mã, phán quyết pháp lý hay điểm tín nhiệm. Không được tìm thấy <strong>không có nghĩa an toàn</strong>. Một địa chỉ có thể là ví cá nhân, smart contract hoặc bị báo cáo nhầm; phải kiểm tra ngữ cảnh, chain, thời gian và bằng chứng.</div>
+</section>
+<section class="sources" id="sources"><span class="eyebrow">OPEN DATA & ATTRIBUTION</span><h2>Nguồn và giấy phép MIT</h2>
+<div class="source-grid"><article><span class="source-label">01 · ETHEREUM ADDRESS DARKLIST</span><h3>MyEtherWallet / ethereum-lists</h3><p>Địa chỉ cùng chú thích, ngày báo cáo từ cộng đồng. Có trùng lặp trong nguồn.</p><a href="https://github.com/MyEtherWallet/ethereum-lists/blob/master/src/addresses/addresses-darklist.json" rel="noopener noreferrer" target="_blank">Mở dữ liệu gốc ↗</a></article>
+<article><span class="source-label">02 · COMMUNITY SCAM REPORTS</span><h3>CryptoScamDB / EtherScamDB</h3><p>Báo cáo liên quan Ethereum, gồm địa chỉ và tên miền. Nhiều mục chỉ có website, không có địa chỉ 0x.</p><a href="https://github.com/CryptoScamDB/EtherScamDB/blob/master/_data/scams.yaml" rel="noopener noreferrer" target="_blank">Mở dữ liệu gốc ↗</a></article></div>
+<p class="attribution">Trích xuất, loại trùng và hiển thị lại với dẫn nguồn. Bản dữ liệu là ảnh chụp theo ngày, không phải luồng tình báo thời gian thực. <a href="./LICENSES.txt">Giấy phép và thông báo bản quyền MIT của hai nguồn</a>.</p>
+</section></main>
+<footer class="footer shell"><span>© 2026 Audityzer · Chỉ dùng dữ liệu công khai · Không kết nối ví</span><a href="../scanner/">← Quét hợp đồng</a></footer>
+</div><script type="module" src="./app.js"></script></body></html>
